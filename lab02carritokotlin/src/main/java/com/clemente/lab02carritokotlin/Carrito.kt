@@ -110,6 +110,35 @@ fun main() {
 
     println()
     println("Gracias por su compra, $nombreCliente!")
+
+
+    println()
+    println()
+    println("Producto encontrado:${BuscaProducto(carrito,"Laptop HP")?.nombre}")
+    println("Producto eliminado: ${EliminarProducto(carrito,"Laptop HP")?.nombre}")
+
+    println()
+    println()
+    println("-----------------------------------")
+    println("DETALLES ACTUALIZADOS")
+    println("-----------------------------------")
+
+    mostrarDetalle(carrito)
+
+
+    println("Cantidad de productos: ${carrito.size}")
+
+    println()
+
+    val nuevosubtotal = calcularSubtotal(carrito)
+    val nuevoigv = calcularIGV(nuevosubtotal)
+    val nuevototal = calcularTotal(nuevosubtotal, nuevoigv)
+
+
+    println(String.format("%-20s S/ %8.2f", "Subtotal:", nuevosubtotal))
+    println(String.format("%-20s S/ %8.2f", "IGV (18%):", nuevoigv))
+    println(String.format("%-20s S/ %8.2f", "TOTAL A PAGAR:", nuevototal))
+    println("---------------------------------------")
 }
 
 fun calcularDescuento(total: Double): Double {
@@ -118,4 +147,27 @@ fun calcularDescuento(total: Double): Double {
         total > 3000 -> total * 0.05
         else -> 0.0
     }
+}
+
+
+fun BuscaProducto(productos: List<Producto>, Nombre:String): Producto?{
+   return   productos.find { it.nombre == Nombre }
+
+
+}
+
+fun EliminarProducto(productos: MutableList<Producto>, Nombre: String):Producto?{
+    val productoEncontrado = productos.find {
+        it.nombre == Nombre
+
+    }
+    if (productoEncontrado == null){
+        return null
+    }
+
+    productos.removeIf {
+        it.nombre == Nombre
+    }
+
+    return productoEncontrado
 }
